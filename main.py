@@ -1,67 +1,52 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jan 16 13:52:31 2024
 
-@author: Elsie
-"""
-
-
-# To import csv file
+# to import csv
 import csv
-# to open file with file path
-with open("Resources\\budget_data.csv", "r") as f:
+
+# to open the csv file with file path
+with open("C:\\Users\\Elsie\\Desktop\\Classwork\\Python\\Module 3\\election_data.csv", "r") as f:
     reader = csv.reader(f)
-
-# skip header row  
+# skip header row   
     next(reader)
-    
-# To set variables  
-    total = 0
-    months = 0    
-    pre_pl = 0
-    total_ch = 0
-    max_inc = 0
-    max_dec = 0
-    
-# To set up loop   
-    for row in reader:
-        months += 1
-        
-# To loop and sum the profit & Loss        
-        p_l = int(row[1])
-        total += p_l
+ 
+    # to set the variables
+    total = 0    
+    candidates = {}
 
-# to calculate the monthly variance          
-      #Average Change
-        ch = p_l - pre_pl
-        if pre_pl == 0:
-            ch = 0
-            
-        total_ch += ch
+# to set loop
+    for row in reader:
+        total += 1
+        candidate = row[2]
+   
+        #to create conditional 
+        if candidate not in candidates.keys():
+            candidates[candidate] = 0
         
-        #Greatest Increase
-        if ch > max_inc:
-            max_inc = ch
-            max_inc_month = row[0]
-            
-         #Greatest Decrease
-        if ch < max_dec:
-            max_dec = ch
-            max_dec_month = row[0]
-       
-# to reset the p_l     
-        pre_pl = p_l
-        
-        
- # use f string template and display the results               
+        candidates[candidate] += 1
+ 
+# to create f string template and print results    
 output = f'''
-Financial Analysis
-------------------------------------------------------------
-Total Months: {months}
-Total: $ {total:,}   
-Average Change: $ {total_ch/(months-1):.2f}
-Greatest Increase in Profits: {max_inc_month} (${max_inc:,})
-Greatest Decrease in Profits: {max_dec_month} (${max_dec:,})
-'''  
-print (output)
-open('Analysis/Budget_Analysis.txt','w').write(output)
+-------------------------
+Total Votes: {total:,}
+-------------------------    
+'''
+
+# set winner varianle
+winner = [0,'']
+
+#Set loop and print the ouput
+for candidate in candidates.keys():
+    votes = candidates[candidate]
+    output += f"{candidate}: {votes/total * 100:.3f}% ({votes:,})\n"
+ 
+    #set conditional
+    if votes > winner[0]:
+        winner[0] = votes
+        winner[1] = candidate
+
+# print winner
+output += f'-------------------------\nWinner: {winner[1]}\n-------------------------'
+print(output)
+
+# print report
+my_report = open('Analysis/Election_Report.txt','w')
+my_report.write(output)
