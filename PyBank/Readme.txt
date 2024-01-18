@@ -12,3 +12,5 @@ PyPoll
 
 The Python code does the analysis requested given the csv file which contained dates and p&L  results.
 It counts the number of votes, sums the total votes by candidates and computes their average votes received. It run through an selects a winner who obtained the most votes. Finaly it will print a report of the findings.
+
+The codes were completed with the help of tutor Geronimo.
